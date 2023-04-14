@@ -1,9 +1,8 @@
 """Functions for reading data and performing MapReduce to identify a word with the highest occurrence or count"""
 import os
 import re
-from operator import itemgetter
 import pandas as pd
-from concurrent.futures import ThreadPoolExecutor
+from functools import reduce
 
 
 class MapReduce:
@@ -96,34 +95,53 @@ class MapReduce:
         return x + y
 
     @staticmethod
-    def final_output(reduce_out: dict, test=False) -> tuple:
+    def final_output(reduce_out: dict) -> tuple:
         """
         Get the passenger id(s) with the highest number of flights.
 
         Args:
             reduce_out (dict): Dictionary of reduced key-value pairs.
-            test (bool): bool value used solely for testing.
 
         Returns:
             tuple: count and word pair for word(s) with the highest number of occurences or counts
         """
-        # if test is True, input dict will not have future object as values, so we skip processing of extracting results
-        # from future objects
-        if test:
-            sorted_items = reduce_out
-        else:
-            # Retrieve results using ThreadPoolExecutor.map()
-            with ThreadPoolExecutor() as executor:
-                sorted_items = list(executor.map(lambda item: (item[0], item[1].result()), reduce_out.items()))
-        # convert list of tuples to dictionary
-        sorted_items = dict(sorted_items)
         # get maximum occurence of any word(ID) in dictionary
-        max_count = max(sorted_items.values())
+        max_count = max(reduce_out.values())
         # get all IDs with maximum occurence
-        passengers = [pass_id for pass_id, value in list(sorted_items.items()) if value == max_count]
+        passengers = [pass_id for pass_id, value in list(reduce_out.items()) if value == max_count]
         # sort and convert list of IDs to formatted strings for pleasant display
         passengers = '\n\t '.join(sorted(passengers))
         return max_count, passengers
+
+    def map_reduce_parallel(self, executor, args: list, test=False):
+        with executor:
+            # perform first mapping operation
+            mapper_output1 = list(executor.map(self.mapper1, args[0], args[1]))
+            # perform second mapping operation
+            mapper_output = list(executor.map(self.mapper2, mapper_output1, args[2]))
+            self.display_log(test, 'Mapping successful')
+            # perform shuffling operation
+            reduce_input = executor.submit(self.shuffle, mapper_output).result()
+            self.display_log(test, 'Shuffle succcessful')
+            # Perform reducing operation and store value as dict
+            reduce_output = {}
+            for key, values in reduce_input.items():
+                future = executor.submit(reduce, self.reduce_func, values)
+                reduce_output[key] = future.result()
+            # check if output is empty
+            if reduce_output:
+                self.display_log(test, 'Reduction succcessful')
+            else:
+                raise ValueError('Reduction Failed: output is empty')
+            # perform final sorting
+            max_count, word = self.final_output(reduce_output)
+            self.display_log(test, 'Final sort Successful')
+        return max_count, word
+
+    @staticmethod
+    def display_log(print_, str_):
+        if not print_:
+            print(str_)
 
 
 def pretty_print(string1, string2=None, count_=7):
