@@ -2,6 +2,7 @@ import unittest
 import tempfile
 import os
 import csv
+from concurrent.futures import ThreadPoolExecutor
 from MapReduce import MapReduce, read_data, header_reader
 
 # Get the parent directory of main.py
@@ -61,7 +62,27 @@ class MapReduceTests(unittest.TestCase):
         input_data = {'id1': 4, 'id2': 2, 'id3': 4, 'id5': 2}
         output_list = "id1\n\t id3"
         expected_output = (4, output_list)
-        self.assertEqual(self.map_reduce.final_output(input_data, test=True), expected_output)
+        self.assertEqual(self.map_reduce.final_output(input_data), expected_output)
+
+    def test_map_reduce_parallel_correct(self):
+        input_data = [['ABC0000DE0', 'XBC1234EF5'], ["ABC1111A", "XYZ2222B"], [2, 5]]
+        output = (5, 'XBC1234EF5')
+        self.assertEqual(self.map_reduce.map_reduce_parallel(ThreadPoolExecutor(), input_data, test=True), output)
+
+        input_data2 = [['ABC0000DE0', 'XBC1234EF5', 'ABC0000DE0'],
+                      ["ABC1111A", "XYZ2222B", 'XYZ2222B'], [1, 1, 1]]
+        output2 = (2, 'ABC0000DE0')
+        self.assertEqual(self.map_reduce.map_reduce_parallel(ThreadPoolExecutor(), input_data2, test=True), output2)
+
+        input_data3 = [['ABC0000DE0', 'XBC1234EF5', 'ABC0000DE0'],
+                       ["ABC1111A", "XYZ2222B", 'XYZ2*22B'], [1, 1, 1]]
+        output3 = (1, 'ABC0000DE0\n\t XBC1234EF5')
+        self.assertEqual(self.map_reduce.map_reduce_parallel(ThreadPoolExecutor(), input_data3, test=True), output3)
+
+    def test_map_reduce_parallel_incorrect(self):
+        input_data = [['ABC00*0DE0', 'XBC1234EF5'], ["ABC1111A", "XYZ2!22B"], [2, 5]]
+        with self.assertRaises(ValueError):
+            self.map_reduce.map_reduce_parallel(ThreadPoolExecutor(), input_data, test=True)
 
     def test_header_reader(self):
         self.assertEqual(header_reader(0), None)
