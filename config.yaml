@@ -1,5 +1,7 @@
 # Further instructions on how to use below.
 
+threading: True
+
 # path to the csv file containing dataset
 path: "data\\AComp_Passenger_data_no_error.csv"
 
