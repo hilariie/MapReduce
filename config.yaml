@@ -1,5 +1,6 @@
 # Further instructions on how to use below.
 
+# set as True to use threading, and False to use multiprocessing
 threading: True
 
 # path to the csv file containing dataset
