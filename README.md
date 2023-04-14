@@ -71,9 +71,12 @@ pip install pyyaml
 ```
 ___
 ## How to run
-To run the project, execute the following command in the `src` directory:
-
+Execute following command in preferred directory:
 ```
+git clone <https link to repo>
+
+cd map-reduce-using-threads-without-hadoop/src/
+
 python main.py
 ```
 
