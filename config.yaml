@@ -1,0 +1,42 @@
+# Further instructions on how to use below.
+
+# path to the csv file containing dataset
+path: "data\\AComp_Passenger_data_no_error.csv"
+
+# if csv file doesn't have header, acceptable values for header are: [0, [], '', None, False, *leave empty*]
+# if csv file has header any value except those mentioned above are acceptable
+header:
+
+# pattern for regex filtering
+# first pattern is for the id/word which you wish to count
+# second pattern is for the id/word which verifies the authenticity of each row of data
+# in the default case, the first pattern is for Passenger ID and second pattern for Flight ID.
+# if Either of these IDs aren't matched, the program discards the row
+pattern:
+  - "^[A-Z]{3}\\d{4}[A-Z]{2}\\d{1}$"
+  - "^[A-Z]{3}\\d{4}[A-Z]{1}$"
+
+# This should match the pattern arrangement above. First value should be the column index for the first column for count.
+# Second value should be column index for the second column for verification
+# Default case: Passenger ID column (index 0) and Flight ID column (index 1)
+column_index:
+  - 0
+  - 1
+
+# If you wish to sum up a particular column rather than summing the count of each appearance of strings in column 1(Passenger ID in this case),
+# provide the index for the column to be summed, set to False.
+# in other words, this is the index of the column to be summed up by the reducer.
+sum_column: False
+
+# what are you searching for? default -> 'Passenger ID(s)' with highest 'trips'
+# This is for display purposes only
+column1_search: 'Passenger ID(s)'
+column2_search: 'Trips'
+
+# How to use;
+# If you want to sum the count (how many times a word/ID appears), set sum_column as False.
+# If you wish to sum any other value, for instance flight time, change 'column2_search' to 'Flight times' and provide
+# the index for the 'flight time' column in 'sum_column'.
+
+# If you wish to change the 'column1_search', REMEMBER to provide the appropriate regex pattern for that column and the
+# verifying column as well in 'pattern' and provide appropriate index for the columns in 'column_index'.
