@@ -18,6 +18,7 @@ This program;
 ___
 ### File description
 * `config.yaml` - configure this file to change the outputs.
+  * threading: Option for switching between threading and multiprocessing.
   * path: Path to csv file containing data.
   * header: If the csv file has headers or not.
   * pattern: The program makes sure words match a particular pattern.
@@ -29,20 +30,19 @@ ___
 
 
 * `src/simple.py` - This script compares performance of threading and 
-multiprocessing for this task with a simplified solution.
+multiprocessing with a simplified Map Reduce solution.
   * To run, enter this code in the src folder: `python simple.py`
   * Output:
 
     ![comparing performance between threading and multiprocessing](images/comparison.png)
 
   
-* `src/main.py` - Following the experiment performed above, the main script was developed using threads.
-This script performs MapReduce on a specified dataset using
-threads and displays the passenger(s) with the highest count (default is passengers with the most trips)
+* `src/main.py` - This script performs MapReduce on a specified dataset using either threads or multiprocessing
+and displays the word(s) with the highest count (default is passengers with the most trips)
   * Output:
   
     ![default_results.png](images/default_results.png)
-  * By modifying `config.yaml` file alone, I configured the program to search and display Flight ID(s) with the most 
+  * By modifying the `config.yaml` file alone, the program was configured to search and display Flight ID(s) with the most 
   Flight Time from another dataset.
     * Output:
   
@@ -50,7 +50,7 @@ threads and displays the passenger(s) with the highest count (default is passeng
 
 * `src/MapReduce.py`: This script contains the MapReduce implementation.
 * `src/testMapReduce.py`: This script contains unit tests for the MapReduce implementation.
-  * To run the tests, run this code in scrips folder: `python testMapReduce.py`
+  * To run the tests, run this code in src folder: `python testMapReduce.py`
 ___
 ### Dependencies
 * **Python3**: This program uses the `concurrent.futures` module, which isn't available 
@@ -63,7 +63,7 @@ put in a `requirement.txt` file. Run the following command to install:
 ```
 pip install -r requirements.txt
 ```
-Alternatively, you can install the two libraries mentioned above separately using the following commands:
+Alternatively, you can install the two libraries mentioned above separately by using the following commands:
 
 ```
 pip install pandas
