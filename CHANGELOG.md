@@ -1,3 +1,18 @@
+# [0.2.0]
+## Added
+
+**Date :**
+
+**14-04-2023**
+
+**AUTHOR :**
+*Akpu, Hilary*
+
+___
+* Added support for threading and multiprocessing in Map Reduce process.
+* Implemented parallelization in all stages of Map Reduce (mapping, shuffle, and reduce). Previously, only mapping and reduce stages were implemented in parallel
+___
+
 # [0.1.0]
 ## Added
 
