@@ -28,6 +28,7 @@ class MapReduce:
         Returns:
             str: Returns Passenger ID if Flight ID matches pattern, otherwise return empty string
         """
+        id_2 = str(id_2)
         if re.findall(self.pattern[1], id_2):
             return id_
         else:
@@ -220,9 +221,7 @@ def read_data(path, column_ind, sum_col=False, header=None, chunk_size=1000) -> 
     elif path_ext[1] != '.csv':
         raise FileNotFoundError(f'Expected .csv file, got {path_ext[1]} instead')
     header = header_reader(header)
-    # use iterator to handle large dataset effectively
-    df_iterator = pd.read_csv(path, header=header, chunksize=chunk_size)
-    df = pd.concat(df_iterator)
+    df = pd.read_csv(path, header=header)
 
     # check for duplicates and handle it appropriately if any is found
     if df.duplicated().sum() > 0:
