@@ -66,7 +66,6 @@ class MapReduce:
             dict: A dictionary containing the organized key-value pairs.
         """
         data = {}
-
         # loop through key-value pair
         for id_, count_ in mapper_out:
             # check if count is int or a Nonetype object
@@ -114,11 +113,24 @@ class MapReduce:
         return max_count, passengers
 
     def map_reduce_parallel(self, executor, args: list, test=False):
+        """
+        Performs map reduce on a list of data entries
+
+        Args:
+            executor: Executor to be used (ThreadPoolExecutor or ProcessPoolExecutor).
+            args: List of 3 data entries in lists.
+            test bool: Tells function not to display anything.
+
+        Returns:
+            word (str): word in first dataset with the highest occurrence or sum of count
+            max_count (int): The highest occurrence or sum of count
+        """
         with executor:
-            # perform first mapping operation
-            mapper_output1 = list(executor.map(self.mapper1, args[0], args[1]))
-            # perform second mapping operation
-            mapper_output = list(executor.map(self.mapper2, mapper_output1, args[2]))
+            # perform  mapping operations
+            chunk_size = int(len(args[0])//executor._max_workers)
+            # Perform mapping operations
+            mapper_output1 = list(executor.map(self.mapper1, args[0], args[1], chunksize=chunk_size))
+            mapper_output = list(executor.map(self.mapper2, mapper_output1, args[2], chunksize=chunk_size))
             self.display_log(test, 'Mapping successful')
             # perform shuffling operation
             reduce_input = executor.submit(self.shuffle, mapper_output).result()
@@ -140,6 +152,13 @@ class MapReduce:
 
     @staticmethod
     def display_log(print_, str_):
+        """
+        Checks if it is appropriate, and displays output
+
+        Args:
+            print_ (bool): True if you wish to display output other False
+            str_ (str): String to display
+        """
         if not print_:
             print(str_)
 
