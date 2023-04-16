@@ -34,6 +34,14 @@ class MapReduceTests(unittest.TestCase):
         os.unlink(self.csv_path)
         self.temp_dir.cleanup()
 
+    def test_mapper1(self):
+        self.assertEqual(self.map_reduce.mapper1("ABC1234DE01", "FFF"), "")
+        self.assertEqual(self.map_reduce.mapper1("aBC1234DBE0", "FFF1234F"), 'aBC1234DBE0')
+        self.assertEqual(self.map_reduce.mapper1("ABC1234D*0", "FFF1234F"), 'ABC1234D*0')
+        self.assertEqual(self.map_reduce.mapper1("", "FFF1234F"), "")
+        self.assertEqual(self.map_reduce.mapper1("XBC1234EF5", "FFF1234F"), 'XBC1234EF5')
+        self.assertEqual(self.map_reduce.mapper1("XBC1234EF5", "FFF1234F01"), '')
+
     def test_mapper2(self):
         self.assertEqual(self.map_reduce.mapper2("ABC1234DE01", 1), ("ABC1234DE01", None))
         self.assertEqual(self.map_reduce.mapper2("ABC1234D*0", 1), ("ABC1234D*0", None))
