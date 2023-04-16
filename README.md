@@ -55,9 +55,9 @@ and displays the word(s) with the highest count (default is passengers with the 
   * To run the tests, run this code in src folder: `python testMapReduce.py`
 ___
 ## Handling Big Data
-The algorithm was tested on a dataset of 1 million rows. Using multiprocessing, the operation completed in about 5.30 seconds
-but completed in about 48 seconds using threading. However, testing the algorithm on a small dataset, using threading,
-the MapReduce operation completed in less than a second whereas for multiprocessing, it takes about 3 seconds.
+The algorithm was tested on a dataset of 1 million rows. Using multiprocessing, the operation completed in 3.74 seconds (see image below)
+but completed in 48 seconds using multithreading. However, testing the algorithm on a small dataset, using multithreading,
+the MapReduce operation completed in less than a second whereas for multiprocessing, it takes approximately 2 seconds.
 
 System specs: 12 core-cpu, 16gb RAM.
 
@@ -65,6 +65,10 @@ All experiments can be done by modifying the configuration file accordingly
 * small dataset - data\AComp_Passenger_data.csv
 
 * large dataset - data\AComp_Passenger_data_duplicates.csv (set duplicates to false in config file)
+
+Multiprocessing the large dataset output:
+
+![multiprocessing_output.png](images/multiprocessing_output.png)
 
 ---
 ## Dependencies
