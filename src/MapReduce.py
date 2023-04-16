@@ -195,7 +195,7 @@ def header_reader(header):
         return None
 
 
-def read_data(path, column_ind, sum_col=False, header=None, chunk_size=1000) -> tuple:
+def read_data(path, column_ind, sum_col=False, header=None, duplicate=True) -> tuple:
     """
     Reads a CSV file and returns a tuple of needed column data.
 
@@ -204,7 +204,7 @@ def read_data(path, column_ind, sum_col=False, header=None, chunk_size=1000) -> 
         sum_col (int): Index of column to be summed by reducer. Default is False.
         column_ind (list): list containing index of needed column(s) data.
         header (int): Indicates if csv file has headers or not. Defaults to None.
-        chunk_size (int): Number of chunks to read csv file.
+        duplicate (bool): if True, remove duplicates, otherwise skip.
 
     Returns:
         tuple: Tuple of needed column data
@@ -223,11 +223,12 @@ def read_data(path, column_ind, sum_col=False, header=None, chunk_size=1000) -> 
     header = header_reader(header)
     df = pd.read_csv(path, header=header)
 
-    # check for duplicates and handle it appropriately if any is found
-    if df.duplicated().sum() > 0:
-        print(f"\nWarning: {df.duplicated().sum()} duplicates found")
-        df.drop_duplicates(keep='first', inplace=True)
-        print("Duplicates removed\n")
+    if duplicate:
+        # check for duplicates and handle it appropriately if any is found
+        if df.duplicated().sum() > 0:
+            print(f"\nWarning: {df.duplicated().sum()} duplicates found")
+            df.drop_duplicates(keep='first', inplace=True)
+            print("Duplicates removed\n")
 
     # check if the number of column indexes provided is 1 or 2 else, raise Error
     column_count = len(column_ind)

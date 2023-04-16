@@ -26,7 +26,7 @@ if __name__ == '__main__':
     # Read data from CSV file
     # Construct the path to dataset path in config.yaml
     path = os.path.join(parent_directory, '..', yml['path'])
-    data = list(read_data(path, column_index, sum_col, header=header))
+    data = list(read_data(path, column_index, sum_col, header=header, duplicate=yml['duplicates']))
 
     pretty_print('Map Reduce')
     map_reduce = MapReduce(pattern)
@@ -35,8 +35,10 @@ if __name__ == '__main__':
     # Get start time
     t1 = time.time()
     if threading:
+        print('Threading in use')
         max_count, word = map_reduce.map_reduce_parallel(ThreadPoolExecutor(), data)
     else:
+        print('Multiprocessing in use')
         max_count, word = map_reduce.map_reduce_parallel(ProcessPoolExecutor(), data)
 
     print('Final shuffle succesful')

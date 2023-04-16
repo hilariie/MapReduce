@@ -1,7 +1,10 @@
 # Further instructions on how to use below.
 
 # set as True to use threading, and False to use multiprocessing
-threading: True
+threading: False
+
+# Set to True to remove duplicates in data, otherwise, False
+duplicates: False
 
 # path to the csv file containing dataset
 path: "data\\AComp_Passenger_data_no_error.csv"
