@@ -1,5 +1,5 @@
 ![mad_reduce_image](images/mapreduce.webp)
-# Map Reduce using Threads - without Hadoop
+# Map Reduce without Hadoop
 
 The objective of this project is to implement a MapReduce solution which is implemented 
 in parallel without the use of Hadoop to determine the passenger(s) 
@@ -62,8 +62,10 @@ the MapReduce operation completed in less than a second whereas for multiprocess
 System specs: 12 core-cpu, 16gb RAM.
 
 All experiments can be done by modifying the configuration file accordingly
-small dataset - data\AComp_Passenger_data.csv
-large dataset - data\AComp_Passenger_data_duplicates.csv
+* small dataset - data\AComp_Passenger_data.csv
+
+* large dataset - data\AComp_Passenger_data_duplicates.csv (set duplicates to false in config file)
+
 ---
 ## Dependencies
 * **Python3**: This program uses the `concurrent.futures` module, which isn't available 
