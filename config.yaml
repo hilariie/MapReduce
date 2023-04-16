@@ -4,10 +4,10 @@
 threading: True
 
 # Set to True to remove duplicates in data, otherwise, False
-duplicates: False
+duplicates: True
 
 # path to the csv file containing dataset
-path: "data\\AComp_Passenger_data_duplicates.csv"
+path: "data\\AComp_Passenger_data_no_error.csv"
 
 # If csv file has header, True otherwise False
 header: False
