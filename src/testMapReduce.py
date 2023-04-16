@@ -85,13 +85,20 @@ class MapReduceTests(unittest.TestCase):
             self.map_reduce.map_reduce_parallel(ThreadPoolExecutor(), input_data, test=True)
 
     def test_header_reader(self):
-        self.assertEqual(header_reader(0), None)
-        self.assertEqual(header_reader('None'), 0)
-        self.assertEqual(header_reader(''), None)
-        self.assertEqual(header_reader([]), None)
         self.assertEqual(header_reader(True), 0)
         self.assertEqual(header_reader(False), None)
-        self.assertEqual(header_reader('False'), 0)
+
+    def test_header_reader_wrong(self):
+        with self.assertRaises(ValueError):
+            header_reader(0)
+        with self.assertRaises(ValueError):
+            header_reader('None')
+        with self.assertRaises(ValueError):
+            header_reader('')
+        with self.assertRaises(ValueError):
+            header_reader([])
+        with self.assertRaises(ValueError):
+            header_reader('False')
 
     def test_read_data_correct(self):
         exp_output1 = ['AAA1234XY9', 'AAA1235XY9', 'AAA1236XY9'], ["XXX1234AB9", "ZZZ1234XX9", "XYZ1234YY9"], [1, 1, 1]

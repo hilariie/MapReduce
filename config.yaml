@@ -1,17 +1,16 @@
 # Further instructions on how to use below.
 
-# set as True to use threading, and False to use multiprocessing
-threading: False
+# Set as True to use threading, and False to use multiprocessing
+threading: True
 
 # Set to True to remove duplicates in data, otherwise, False
 duplicates: False
 
 # path to the csv file containing dataset
-path: "data\\AComp_Passenger_data_no_error.csv"
+path: "data\\AComp_Passenger_data_duplicates.csv"
 
-# if csv file doesn't have header, acceptable values for header are: [0, [], '', None, False, *leave empty*]
-# if csv file has header any value except those mentioned above are acceptable
-header:
+# If csv file has header, True otherwise False
+header: False
 
 # pattern for regex filtering
 # first pattern is for the id/word which you wish to count

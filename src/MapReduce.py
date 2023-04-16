@@ -179,7 +179,7 @@ def pretty_print(string1, string2=None, count_=7):
         print(f"{print_style} {string1}:  {print_style}\n\n{string2}")
 
 
-def header_reader(header):
+def header_reader(header: bool):
     """
     Checks if dataset has headers or not based on input
 
@@ -189,13 +189,15 @@ def header_reader(header):
     Returns:
         returns 0 ('infer') if dataset has headers, otherwise None
     """
-    if header:
+    if header is True:
         return 0
-    else:
+    elif header is False:
         return None
+    else:
+        raise ValueError(f"Expected bool (True or False) got {header} instead.")
 
 
-def read_data(path, column_ind, sum_col=False, header=None, duplicate=True) -> tuple:
+def read_data(path, column_ind, sum_col=False, header=False, duplicate=True) -> tuple:
     """
     Reads a CSV file and returns a tuple of needed column data.
 
