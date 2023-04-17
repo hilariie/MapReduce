@@ -32,6 +32,13 @@ if __name__ == '__main__':
     map_reduce = MapReduce(pattern)
 
     threading = yml['threading']
+    # If data is large and threading has been chosen in config file
+    # Provide option to switch to multiprocessing
+    if (len(data[0]) > 400000) and threading:
+        thread_input = input("Large dataset detected and threading has been chosen.\n"
+                             "Switch to multiprocessing? (y/n)\n")
+        if thread_input == 'y':
+            threading = False
     # Get start time
     t1 = time.time()
     if threading:

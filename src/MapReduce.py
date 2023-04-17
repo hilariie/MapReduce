@@ -127,7 +127,6 @@ class MapReduce:
             max_count (int): The highest occurrence or sum of count
         """
         with executor:
-            # perform  mapping operations
             chunk_size = int(len(args[0])//executor._max_workers)
             # Perform mapping operations
             mapper_output1 = list(executor.map(self.mapper1, args[0], args[1], chunksize=chunk_size))
@@ -141,14 +140,14 @@ class MapReduce:
             for key, values in reduce_input.items():
                 future = executor.submit(reduce, self.reduce_func, values)
                 reduce_output[key] = future.result()
-            # check if output is empty
-            if reduce_output:
-                self.display_log(test, 'Reduction succcessful')
-            else:
-                raise ValueError('Reduction Failed: output is empty')
-            # perform final sorting
-            max_count, word = self.final_output(reduce_output)
-            self.display_log(test, 'Final sort Successful')
+        # check if output is empty
+        if reduce_output:
+            self.display_log(test, 'Reduction succcessful')
+        else:
+            raise ValueError('Reduction Failed: output is empty')
+        # perform final sorting
+        max_count, word = self.final_output(reduce_output)
+        self.display_log(test, 'Final sort Successful')
         return max_count, word
 
     @staticmethod
